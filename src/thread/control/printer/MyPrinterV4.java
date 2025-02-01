@@ -15,7 +15,7 @@ public class MyPrinterV4 {
 
         Scanner userInput = new Scanner(System.in);
         while (true) {
-            log("input String for print. exit : q");
+            log("프린터할 문서를 입력하세요. 종료 (q): ");
             String input = userInput.nextLine();
             if (input.equals("q")) {
                 printerThread.interrupt();
@@ -26,34 +26,31 @@ public class MyPrinterV4 {
     }
 
     static class Printer implements Runnable {
-        Queue<String> jobQueue = new ConcurrentLinkedQueue<>(); // 동시성
+        Queue<String> jobQueue = new ConcurrentLinkedQueue<>();
 
         @Override
         public void run() {
-            log("printer run");
             while (!Thread.interrupted()) {
                 if (jobQueue.isEmpty()) {
-                    Thread.yield();
+                    Thread.yield(); // 추가
                     continue;
                 }
+
                 try {
                     String job = jobQueue.poll();
-                    log("print start : " + job);
-                    log("waiting job : " + jobQueue);
+                    log("출력 시작: " + job + ", 대기 문서: " + jobQueue);
                     Thread.sleep(3000);
-                    log("print end");
+                    log("출력 완료");
                 } catch (InterruptedException e) {
-                    log("interrupt!");
-                    log("thread state : " + Thread.currentThread().getState());
+                    log("인터럽트!");
                     break;
                 }
             }
-            log("printer exit");
+            log("프린터 종료");
         }
 
         public void addJob(String input) {
             jobQueue.offer(input);
         }
     }
-
 }

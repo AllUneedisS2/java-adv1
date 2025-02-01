@@ -8,12 +8,9 @@ public class CheckedExceptionMain {
 
     static class CheckedRunnable implements Runnable {
 
-        // Runnable 클래스에서 체크 예외를 던지지 않기 때문에 상속받은 자식도 던질 수 없음
         @Override
-        public void run() /*throws Exception*/ {
-            /*throw new Exception();*/
+        public void run() /*throws Exception*/ { // 주석 풀면 예외 발생
+            //throw new Exception(); // 주석 풀면 예외 발생
         }
-
     }
-
 }

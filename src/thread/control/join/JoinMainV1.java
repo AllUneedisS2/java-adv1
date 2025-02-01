@@ -6,24 +6,21 @@ import static util.ThreadUtils.sleep;
 public class JoinMainV1 {
 
     public static void main(String[] args) {
-        log("START");
-
-        SumTask sumTask1 = new SumTask(1, 50);
-        SumTask sumTask2 = new SumTask(51, 100);
-
-        Thread thread1 = new Thread(sumTask1, "sumTask1");
-        Thread thread2 = new Thread(sumTask2, "sumTask2");
+        log("Start");
+        SumTask task1 = new SumTask(1, 50);
+        SumTask task2 = new SumTask(51, 100);
+        Thread thread1 = new Thread(task1, "thread-1");
+        Thread thread2 = new Thread(task2, "thread-2");
 
         thread1.start();
         thread2.start();
 
-        log("sumTask1.result = " + sumTask1.result);
-        log("sumTask2.result = " + sumTask2.result);
+        log("task1.result = " + task1.result);
+        log("task2.result = " + task2.result);
 
-        int sumAll = sumTask1.result + sumTask2.result;
-        log("sumAll = " + sumAll);
-
-        log("END");
+        int sumAll = task1.result + task2.result;
+        log("task1 + task2 = "+ sumAll);
+        log("End");
     }
 
     static class SumTask implements Runnable {
@@ -39,18 +36,14 @@ public class JoinMainV1 {
 
         @Override
         public void run() {
-            log(Thread.currentThread().getName() + " start");
+            log("작업 시작");
             sleep(2000);
-
             int sum = 0;
             for (int i = startValue; i <= endValue; i++) {
                 sum += i;
             }
             result = sum;
-            log(Thread.currentThread().getName() + " result = " + result);
-
-            log(Thread.currentThread().getName() + " end");
+            log("작업 완료 result = " + result);
         }
     }
-
 }

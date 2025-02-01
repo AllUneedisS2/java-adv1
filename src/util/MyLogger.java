@@ -11,5 +11,4 @@ public abstract class MyLogger {
         String time = LocalTime.now().format(formatter);
         System.out.printf("%s [%9s] %s\n", time, Thread.currentThread().getName(), obj);
     }
-
 }

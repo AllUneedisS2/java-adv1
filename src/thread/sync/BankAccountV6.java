@@ -17,19 +17,13 @@ public class BankAccountV6 implements BankAccount {
         this.balance = initialBalance;
     }
 
-    // synchronized : 동시에 여러개의 스레드에서 호출을 막는다
-    // (volatile을 사용하지 않아도 이를 해결해주기도 한다)
-    // 단점1 - interrupt와 timeout의 부재
-    // 단점2 - 공정성 : BLOCKED 상태의 여러 스레드 중 누가 LOCK을 획득할지 알 수는 없다 => 하나의 스레드가 오래 기다리게 됨
     @Override
     public boolean withdraw(int amount) {
-        log("[거래 시작] : " + getClass().getSimpleName());
+        log("거래 시작: " + getClass().getSimpleName());
 
-        // ==임계 영역 시작==
-        // ReentrantLock 사용하여 tryLock()
         try {
             if (!lock.tryLock(500, TimeUnit.MILLISECONDS)) {
-                log("[진입 실패] : 이미 처리중인 작업이 있습니다");
+                log("[진입 실패] 이미 처리중인 작업이 있습니다.");
                 return false;
             }
         } catch (InterruptedException e) {
@@ -37,37 +31,31 @@ public class BankAccountV6 implements BankAccount {
         }
 
         try {
-            log("[검증 시작] : 잔고 : " + balance + ", 인출액 : " + amount);
-
-            // 잔고가 출금액 보다 많으면, 진행X
+            log("[검증 시작] 출금액: " + amount + ", 잔액: " + balance);
             if (balance < amount) {
-                log("[검증 실패]");
+                log("[검증 실패] 출금액: " + amount + ", 잔액: " + balance);
                 return false;
             }
 
-            // 잔고가 출금액 보다 적으면, 진행O
-            log("[검증 완료]");
-
-            log("[출금 진행]");
-            sleep(1000);
+            // 잔고가 출금액 보다 많으면, 진행
+            log("[검증 완료] 출금액: " + amount + ", 잔액: " + balance);
+            sleep(1000); // 출금에 걸리는 시간으로 가정
             balance = balance - amount;
+            log("[출금 완료] 출금액: " + amount + ", 잔액: " + balance);
         } finally {
-            lock.unlock(); // ReentrantLock 사용하여 unlock()
-            // ==임계 영역 종료==
+            lock.unlock(); // ReentrantLock 이용하여 lock 해제
         }
-
-        log("[거래 종료]");
+        log("거래 종료");
         return true;
     }
 
     @Override
     public int getBalance() {
-        lock.lock();
+        lock.lock(); // ReentrantLock 이용하여 lock을 걸기
         try {
             return balance;
         } finally {
-            lock.unlock();
+            lock.unlock(); // ReentrantLock 이용하여 lock 해제
         }
     }
-
 }

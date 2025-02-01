@@ -20,11 +20,4 @@ public class InnerRunnableMainV2 {
         log("main() end");
     }
 
-    static class MyRunnable implements Runnable {
-        @Override
-        public void run() {
-            log("run()");
-        }
-    }
-
 }

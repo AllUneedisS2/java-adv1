@@ -8,5 +8,4 @@ public class MyLoggerMain {
         log("hello thread");
         log(123);
     }
-
 }

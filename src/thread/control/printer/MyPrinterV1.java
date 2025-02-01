@@ -16,7 +16,7 @@ public class MyPrinterV1 {
 
         Scanner userInput = new Scanner(System.in);
         while (true) {
-            log("input String for print. exit : q");
+            log("프린터할 문서를 입력하세요. 종료 (q): ");
             String input = userInput.nextLine();
             if (input.equals("q")) {
                 printer.work = false;
@@ -28,27 +28,25 @@ public class MyPrinterV1 {
 
     static class Printer implements Runnable {
         volatile boolean work = true;
-        Queue<String> jobQueue = new ConcurrentLinkedQueue<>(); // 동시성
+        Queue<String> jobQueue = new ConcurrentLinkedQueue<>();
 
         @Override
         public void run() {
-            log("printer run");
             while (work) {
                 if (jobQueue.isEmpty()) {
                     continue;
                 }
+
                 String job = jobQueue.poll();
-                log("print start : " + job);
-                log("waiting job : " + jobQueue);
+                log("출력 시작: " + job + ", 대기 문서: " + jobQueue);
                 sleep(3000);
-                log("print end");
+                log("출력 완료");
             }
-            log("printer exit");
+            log("프린터 종료");
         }
 
         public void addJob(String input) {
             jobQueue.offer(input);
         }
     }
-
 }

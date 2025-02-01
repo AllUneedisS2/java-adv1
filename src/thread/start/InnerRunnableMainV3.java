@@ -14,15 +14,8 @@ public class InnerRunnableMainV3 {
             }
         });
         thread.start();
-        
-        log("main() end");
-    }
 
-    static class MyRunnable implements Runnable {
-        @Override
-        public void run() {
-            log("run()");
-        }
+        log("main() end");
     }
 
 }

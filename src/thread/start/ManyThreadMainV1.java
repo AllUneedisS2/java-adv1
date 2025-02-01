@@ -2,7 +2,7 @@ package thread.start;
 
 import static util.MyLogger.log;
 
-public class ManyThreadMain1 {
+public class ManyThreadMainV1 {
 
     public static void main(String[] args) {
         log("main() start");
@@ -17,5 +17,4 @@ public class ManyThreadMain1 {
 
         log("main() end");
     }
-
 }
