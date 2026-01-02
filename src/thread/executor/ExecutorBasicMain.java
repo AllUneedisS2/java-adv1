@@ -27,7 +27,7 @@ public class ExecutorBasicMain {
         printState(es);
 
         es.close();
-        log("== showdown 완료 ==");
+        log("== shutdown 완료 ==");
         printState(es);
     }
 }
